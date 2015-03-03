@@ -39,6 +39,7 @@ HOSTNAME=dev3.jsonlin.cn
 ```
 
 ### 2、创建执行用户（每台服务器）
+注：决定用哪个用户执行，就创建哪个用户，如果是root用户则这一步略过
 ```
 groupadd -r hadoop
 useradd -g hadoop hadoop
@@ -413,5 +414,5 @@ Hue : hue-3.6.0-cdh5.3.1.tar.gz
 java进程统计管理，可以查看有多少hadoop进程启动了
 /usr/local/jdk1.7.0_75/bin/jps
 
-
-![image](./imgs/steps.pn1g)
+持续不定期更新，地址
+https://github.com/server-online/hadoop
