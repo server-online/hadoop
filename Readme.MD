@@ -51,6 +51,8 @@ ZooKeeper 动物园管理员O(∩_∩)O~
 | Hue | 可视化 Hadoop 应用的用户接口框架和 SDK |
 | Flume | 高可靠、可配置的数据流集合 |
 | Chukwa | 定期抓去数据源到 Hadoop 中 |
+| Oozie | Oozie是一个工作流引擎服务器,用于运行Hadoop Map/Reduce和Pig 任务工作流.同时Oozie还是一个Java Web程序,运行在Java Servlet容器中,如Tomcat. 参考：http://www.open-open.com/lib/view/open1328413117624.html |
+
 
 
 ## 三、Hadoop 分布式文件系统

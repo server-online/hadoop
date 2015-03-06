@@ -184,22 +184,33 @@ Cloudera Enterprise 是需要购买注册码的
 ```
 2.1) 下载地址
 
-Cloudera Manager 管理地址
+Cloudera Manager 下载地址
+找到对应的系统版本下载
 http://archive-primary.cloudera.com/cm5/cm/5/
+or
+http://archive.cloudera.com/cm5/cm/5/
 
-CDH安装包地址 (Cloudera Manager 是通过这种方式管理各个组件的)
-http://archive.cloudera.com/cdh5/parcels/latest/
-Centos6下载：
-CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel
-CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel.sha1
+如：
+Centos6版本 : cloudera-manager-el6-cm5.3.2_x86_64.tar.gz
+Ubuntu版本 : cloudera-manager-precise-cm5.3.2_amd64.tar.gz
+
+
+2.2) Cloudera Manager 管理的 CDH 安装包下载地址 (Cloudera Manager 是通过这种方式管理各个Hadoop组件的)
+所有的版本包下载 : http://archive-primary.cloudera.com/cdh5/parcels/
+最新版本下载 : http://archive.cloudera.com/cdh5/parcels/latest/
+
+Centos6下载：(对应版本-el6)
+CDH-5.3.2-1.cdh5.3.2.p0.5-el6.parcel
+CDH-5.3.2-1.cdh5.3.2.p0.5-el6.parcel.sha1
+manifest.json
+
+Ubuntu下载：(对应版本precise)
+CDH-5.3.2-1.cdh5.3.2.p0.10-precise.parcel
+CDH-5.3.2-1.cdh5.3.2.p0.10-precise.parcel.sha1
 manifest.json
 
 
-CM4、CM5包汇总
-http://archive.cloudera.com/cm4/
-http://archive.cloudera.com/cm5/
-
-2.2) 版本对应  
+2.3) 版本对应  
 a) Centos 对应
    el*
    如el5、el6
@@ -249,43 +260,41 @@ tar 包管理源码安装
 
 详细地址：http://www.cnblogs.com/jasondan/p/4011153.html
 
-其中 /opt/cloudera-manager/cm-5.3.1/ 作为一个自定义目录
+其中 /opt/cloudera-manager/cm-5.3.2/ 作为一个自定义目录，5.3.2 作为一个版本，如果使用其他版本的
+请直接替换成对应的版本号即可
 
 #### 4.1、安装命令 (master 节点)
 ```
 1) 目录规划
-mv cloudera-manager-el6-cm5.3.1_x86_64.tar.gz /opt/
-tar -zxvf cloudera-manager-el6-cm5.3.1_x86_64.tar.gz
+mv cloudera-manager-el6-cm5.3.2_x86_64.tar.gz /opt/
+tar -zxvf cloudera-manager-el6-cm5.3.2_x86_64.tar.gz
 mkdir /opt/cloudera-manager
-mv /opt/cm-5.3.1/ /opt/cloudera-manager/
+mv /opt/cm-5.3.2/ /opt/cloudera-manager/
 
 2) 为 Cloudera Manager Server 建立数据库
 #添加 java mysql 驱动类
-cp -arip  mysql-connector-java-5.1.31-bin.jar /opt/cloudera-manager/cm-5.3.1/share/cmf/lib/
+cp -arip  mysql-connector-java-5.1.31-bin.jar /opt/cloudera-manager/cm-5.3.2/share/cmf/lib/
 
 a) mysql 上建立scm数据库
-/opt/cloudera-manager/cm-5.3.1/share/cmf/schema/scm_prepare_database.sh mysql -h127.0.0.1 -uroot -p514591 --scm-host localhost scm scm scm
+/opt/cloudera-manager/cm-5.3.2/share/cmf/schema/scm_prepare_database.sh mysql -h127.0.0.1 -uroot -p514591 --scm-host localhost scm scm scm
 #---格式是:  scm_prepare_database.sh 数据库类型  数据库 服务器 用户名 密码  --scm-host  Cloudera_Manager_Server所在的机器
 
 #---出现如下表示成功
 ully connected to database.
 All done, your SCM database is configured correctly!
 
-b) 启动 Cloudera Manager Server 服务端口
-/opt/cloudera-manager/cm-5.3.1/etc/init.d/cloudera-scm-server start [--restart重启 --stop 关闭]
+b) 启动 Cloudera Manager Server 服务端口 (master，等待全部配置好再启动切记)
+/opt/cloudera-manager/cm-5.3.2/etc/init.d/cloudera-scm-server start [--restart重启 --stop 关闭]
 
-c) 设置成开机启动
+c) 设置成开机启动（记住哦）
 vim /etc/rc.d/rc.local
 #---mysql开机启动
 /usr/local/mysql-5.6.21/support-files/mysql.server start
 
-#---cloudera-scm-server 服务端口开机启动
-/opt/cloudera-manager/cm-5.3.1/etc/init.d/cloudera-scm-server start
-
 
 3) Cloudera Manager Agents 服务端口配置
 a) 先修改 Agents 配置文件 (master 上操作)
-vim /opt/cloudera-manager/cm-5.3.1/etc/cloudera-scm-agent/config.ini
+vim /opt/cloudera-manager/cm-5.3.2/etc/cloudera-scm-agent/config.ini
 #这里写 master 域名或者Ip
 server_host=dev1.jsonlin.cn
 server_port=7182 #服务端口
@@ -296,16 +305,16 @@ scp -r /opt/cloudera-manager root@dev3.jsonlin.cn:/opt/
 scp -r /opt/cloudera-manager root@dev4.jsonlin.cn:/opt/
 
 c) 添加 cloudera-scm 用户 (所有节点)
-useradd --system --home=/opt/cloudera-manager/cm-5.3.1/run/cloudera-scm-server --no-create-home --shell=/bin/false --comment "Cloudera SCM User" cloudera-scm
+useradd --system --home=/opt/cloudera-manager/cm-5.3.2/run/cloudera-scm-server --no-create-home --shell=/bin/false --comment "Cloudera SCM User" cloudera-scm
 
-d) 为所有的节点都启动 (所有节点)
-/opt/cloudera-manager/cm-5.3.1/etc/init.d/cloudera-scm-agent start
+d) cloudera-scm-agent 为所有的节点都启动 (所有节点，等待全部配置好再启动切记)
+/opt/cloudera-manager/cm-5.3.2/etc/init.d/cloudera-scm-agent start
 
 #---所有节点开机启动
 vim /etc/rc.d/rc.local
 
 #cloudera-scm-agent
-/opt/cloudera-manager/cm-5.3.1/etc/init.d/cloudera-scm-agent start
+/opt/cloudera-manager/cm-5.3.2/etc/init.d/cloudera-scm-agent start
 ```
 
 #### 4.2、准备Parcels，用以安装CDH5
@@ -315,8 +324,8 @@ vim /etc/rc.d/rc.local
  http://archive.cloudera.com/cdh5/parcels/latest/
 
 Centos6 :
-CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel
-CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel.sha1
+CDH-5.3.2-1.cdh5.3.2.p0.5-el6.parcel
+CDH-5.3.2-1.cdh5.3.2.p0.5-el6.parcel.sha1
 manifest.json
 
 其他系统欢迎补充.....
@@ -331,12 +340,12 @@ ll /opt/cloudera/parcel-repo
 mkdir -p /opt/cloudera/parcel-repo
 
 2) 存放文件到 /opt/cloudera/parcel-repo/ (master)
-CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel
-CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel.sha1
+CDH-5.3.2-1.cdh5.3.2.p0.5-el6.parcel
+CDH-5.3.2-1.cdh5.3.2.p0.5-el6.parcel.sha1
 manifest.json
 
 3) *.sha1 文件改名为 *.sha
-mv /opt/cloudera/parcel-repo/CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel.sha1  /opt/cloudera/parcel-repo/CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel.sha
+mv /opt/cloudera/parcel-repo/CDH-5.3.2-1.cdh5.3.2.p0.5-el6.parcel.sha1  /opt/cloudera/parcel-repo/CDH-5.3.2-1.cdh5.3.2.p0.5-el6.parcel.sha
 ```
 
 #### 4.3 准备浏览器跑起来，辛苦这么久嘿嘿
@@ -346,10 +355,10 @@ mv /opt/cloudera/parcel-repo/CDH-5.3.1-1.cdh5.3.1.p0.5-el6.parcel.sha1  /opt/clo
 http://dev1.jsonlin.cn:7180
 
 #启动 cloudera-scm-server
-/opt/cloudera-manager/cm-5.3.1/etc/init.d/cloudera-scm-server restart
+/opt/cloudera-manager/cm-5.3.2/etc/init.d/cloudera-scm-server restart
 
 #启动 cloudera-scm-agent
-/opt/cloudera-manager/cm-5.3.1/etc/init.d/cloudera-scm-agent restart
+/opt/cloudera-manager/cm-5.3.2/etc/init.d/cloudera-scm-agent restart
 
 先让 cloudera-scm-server 启动成功
 netstat -tunlp | grep jave --- 7180
@@ -357,9 +366,40 @@ netstat -tunlp | grep jave --- 7180
 再启动 cloudera-scm-agent jave --- 7180
 netstat -tunlp | grep jave --- 7182
 
-一般需要耐心等待几分钟
+一般需要耐心等待几分钟才能看到端口
+
+#如果有问题看日志文件，在这个目录下
+/opt/cloudera-manager/cm-5.3.2/log/
+
+端口
+7180 cloudera-manager 提供的 web 端口
+7182 cloudera-manage-server 主节点提供的 manage 端口
 
 ```
+
+
+#### 4.4 错误处理
+```
+1) cloudera-scm-agent restart报错：ImportError: No module named _io
+
+a) tar 包安装解决方案
+cp /opt/cloudera-manager/cm-5.3.2/lib/cmf/agent/build/env/bin/python2.7 /opt/cloudera-manager/cm-5.3.2/lib/cmf/agent/build/env/bin/python-2015-03-05
+cp /usr/bin/python2.7 /opt/cloudera-manager/cm-5.3.2/lib/cmf/agent/build/env/bin/python
+
+b) yum/apt 安装解决方案
+mv /usr/lib/cmf/agent/build/env/bin/python /usr/lib/cmf/agent/build/env/bin/python.bak
+cp /usr/bin/python2.7 /usr/lib/cmf/agent/build/env/bin/python
+文章地址 : http://www.aboutyun.com/blog-10256-891.html
+
+2) 安装 hive 的时候 Failed to Create Hive Metastore Database Tables
+a) 安装 java 驱动类
+sudo apt-get install libmysql-java
+
+b) 或者在 /etc/profile 引入这个包
+$JAVA_HOME/lib/mysql-connector-java-5.1.31-bin.jar
+
+```
+
 
 
 ## ---------华丽的分割线------------
@@ -386,12 +426,12 @@ CDH5 http://archive.cloudera.com/cdh5/cdh/5/
 以 5.1.3 版本为例子
 
 下载对应的安装包即可，最新版本
-hadoop : hadoop-2.5.0-cdh5.3.1.tar.gz
+hadoop : hadoop-2.5.0-cdh5.3.2.tar.gz
 
 下载对应的生态包，找到如下规律的对应安装包即可
-Hbase : hbase-0.98.1-cdh5.3.1.tar.gz
-Hive : hive-0.12.0-cdh5.3.1.tar.gz
-Hue : hue-3.6.0-cdh5.3.1.tar.gz
+Hbase : hbase-0.98.1-cdh5.3.2.tar.gz
+Hive : hive-0.12.0-cdh5.3.2.tar.gz
+Hue : hue-3.6.0-cdh5.3.2.tar.gz
 
 ```
 
