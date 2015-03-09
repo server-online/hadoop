@@ -8,10 +8,10 @@
 ## 一、线下环境
 | 节点 | 角色 | 配置 |
 | ------ | ------------ | -----|
-| CDH001 | CM-Server、Mysql(CM元数据存储)、NameNode Jobtracker、Hive-Metastore、ResourManager、 CM-agent | 8GB内存，1xT硬盘 |
-| CDH002 | SecondaryNameNode、CM-agent | 16GB内存，1xT硬盘 |
-| CDH003 | DataNode TaskTracker Zookeeper CM-agent | 8G内存，1xT硬盘 |
-| CDH004 | DataNode TaskTracker Zookeeper CM-agent | 8G内存，1x1T硬盘 |
+| CDH001 | CM-Server、Mysql(CM元数据存储)、NameNode Jobtracker、Hive-Metastore、ResourManager、 CM-agent | 16GB内存，1xT硬盘 |
+| CDH002 | SecondaryNameNode、CM-agent | 8~16GB内存，1xT硬盘 |
+| CDH003 | DataNode TaskTracker Zookeeper CM-agent | 4~8G内存，1xT硬盘 |
+| CDH004 | DataNode TaskTracker Zookeeper CM-agent | 4~8G内存，1x1T硬盘 |
 
 
 
