@@ -398,6 +398,10 @@ sudo apt-get install libmysql-java
 b) 或者在 /etc/profile 引入这个包
 $JAVA_HOME/lib/mysql-connector-java-5.1.31-bin.jar
 
+3) 重新安装部署
+a) 删除 NameNode 里的 /dfs/dn/current/ 文件夹
+   删除 DataNode 里的 /dfs/dn/current/ 文件夹
+
 ```
 
 
