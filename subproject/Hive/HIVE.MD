@@ -75,17 +75,7 @@ drop table xxx;
 drop database xxx;
 
 6) 创建表
-
-a) 普通表
-create table student(sid int,sname string)
-ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE;
-
-b) 创建索引表 (ds 为分区字段)
-create table student_index(sid int , sname string) partitioned by (ds string)
-ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' STORED AS TEXTFILE;
-
-c) 更详细索引表 (teacher、nickname 为分区字段,加上备注)
-create table classmem_index_1(student string,age int) partitioned by(teacher string comment 'the teacher',nickname string comment 'the nickname');
+看下面的详细说明
 
 7) 重命名表 student to student2
 alter table student rename to student2;
@@ -106,7 +96,30 @@ RUNCATE TABLE student;
 CREATE TABLE empty_table_name LIKE table_name;
 ```
 
+
 ### 2、导入数据到 hive 中
+
+#### 2.1、创建表
+```
+1) 普通表
+create table student(sid int,sname string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE;
+
+2) 创建索引表 (ds 为分区字段)
+create table student_index(sid int , sname string) partitioned by (ds string)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE;
+
+3) 更详细索引表 (teacher、nickname 为分区字段,加上备注)
+create table classmem_index_1(student string,age int)
+partitioned by(teacher string comment 'the teacher',nickname string comment 'the nickname');
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+STORED AS TEXTFILE;  
+```
+
+
+#### 2.2、导入数据
 ```
 1) 从本地文件导入数据
 
@@ -138,6 +151,27 @@ select id, name,tel, age from wyp;
 
 ```
 
+#### 2.3、更复杂的数据导入
+```
+create external table nginx_accesslog(
+    request_time string,
+    upstream_response_time string,
+    upstream_addr string,
+    access_time string,
+    hostname string,
+    request_uri string,
+    http_code string,
+    bytes_sent string,
+    referer string,
+    user_agent string,
+    remote_addr string,
+    guid string)
+row format SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
+WITH SERDEPROPERTIES ("input.regex" = "([^ ]+)\\s.*?\\s([^ ]+)\\s.*?\\s([^ ]+)\\s.*?\\s.*?\\s\\[([^ ]+)\\s\\+\\d{4}\\]\\s([^ ]+)\\s\"\\w+\\s([^ ]+)\\s.+?\"\\s(\\d+)\\s(\\d+)\\s\"([^ ]+)\"\\s\"(.*?)\"\\s\".*?\"\\s\"([^ ]+)\"\\s\"([\\w-]+)\"\\s.*","output.format.string" = "%1$s %2$s %3$s %4$s %5$s %6$s %7$s %8$s %9$s %10$s %11$s %12$s")
+STORED AS TEXTFILE
+location '/user/ray/nginxlog';
+```
+
 ### 3、表说明
 
 #### 3.1、表类型：
@@ -155,7 +189,10 @@ CREATE EXTERNAL TABLE test_1(id INT, name STRING, city STRING) SORTED BY TEXTFIL
 3) 分区表
 有分区的表可以在创建的时候使用 PARTITIONED BY 语句。一个表可以拥有一个或者多个分区，每一个分区单独存在一个目录下。而且，表和分区都可以对某个列进行 CLUSTERED BY 操作，将若干个列放入一个桶（bucket）中。也可以利用SORT BY 对数据进行排序。这样可以为特定应用提高性能。具体SQL如下：
 
-CREATE TABLE test_1(id INT, name STRING, city STRING) PARTITIONED BY (pt STRING) SORTED BY TEXTFILE ROW FORMAT DELIMITED FIELDS TERMINATED BY‘\t’  
+CREATE TABLE test_1(id INT, name STRING, city STRING)
+PARTITIONED BY (pt STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY‘\t’
+SORTED BY TEXTFILE
 
 分区表实际是一个文件夹，表名即文件夹名。每个分区，实际是表名这个文件夹下面的不同文件。分区可以根据时间、地点等等进行划分。比如，每天一个分区，等于每天存每天的数据；或者每个城市，存放每个城市的数据。每次查询数据的时候，只要写下类似 where pt=2010_08_23这样的条件即可查询指定时间得数据
 ```
