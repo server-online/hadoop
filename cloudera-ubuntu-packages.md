@@ -277,3 +277,32 @@ deb-src http://archive.cloudera.com/cm5/ubuntu/trusty/amd64/cm trusty-cm5 contri
 curl -s http://archive.cloudera.com/cm5/ubuntu/trusty/amd64/cm/archive.key| sudo apt-key add -
 apt-get update
 ```
+### 3、12.04的源
+
+```
+deb http://cn.archive.ubuntu.com/ubuntu/ precise main restricted
+deb-src http://cn.archive.ubuntu.com/ubuntu/ precise main restricted
+deb http://cn.archive.ubuntu.com/ubuntu/ precise-updates main restricted
+deb-src http://cn.archive.ubuntu.com/ubuntu/ precise-updates main restricted
+deb http://cn.archive.ubuntu.com/ubuntu/ precise universe
+deb-src http://cn.archive.ubuntu.com/ubuntu/ precise universe
+deb http://cn.archive.ubuntu.com/ubuntu/ precise-updates universe
+deb-src http://cn.archive.ubuntu.com/ubuntu/ precise-updates universe
+deb http://cn.archive.ubuntu.com/ubuntu/ precise multiverse
+deb-src http://cn.archive.ubuntu.com/ubuntu/ precise multiverse
+deb http://cn.archive.ubuntu.com/ubuntu/ precise-updates multiverse
+deb-src http://cn.archive.ubuntu.com/ubuntu/ precise-updates multiverse
+deb http://cn.archive.ubuntu.com/ubuntu/ precise-backports main restricted universe multiverse
+deb-src http://cn.archive.ubuntu.com/ubuntu/ precise-backports main restricted universe multiverse
+deb http://security.ubuntu.com/ubuntu precise-security main restricted
+deb-src http://security.ubuntu.com/ubuntu precise-security main restricted
+deb http://security.ubuntu.com/ubuntu precise-security universe
+deb-src http://security.ubuntu.com/ubuntu precise-security universe
+deb http://security.ubuntu.com/ubuntu precise-security multiverse
+deb-src http://security.ubuntu.com/ubuntu precise-security multiverse
+```
+### 4、如果遇到python报错：ImportError: No module named _io
+```
+mv /usr/lib/cmf/agent/build/env/bin/python /usr/lib/cmf/agent/build/env/bin/python.bak
+cp /usr/bin/python2.7 /usr/lib/cmf/agent/build/env/bin/python
+```

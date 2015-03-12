@@ -115,7 +115,7 @@ hadoop-fuse-dfs dfs://<name_node_hostname>:<namenode_port> <mount_point>
 mkdir -p /data/hdfs/
 chown -R hdfs:hdfs /data/hdfs/
 
-hadoop-fuse-dfs dfs://192.168.160.45:8020/usr/test /data/hdfs/
+hadoop-fuse-dfs dfs://192.168.160.45:8020/ /data/hdfs/
 
 umount /data/hdfs/ 卸载分区
 ```
