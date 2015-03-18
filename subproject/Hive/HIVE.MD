@@ -21,7 +21,7 @@
 
 ### 1、组件
 ```
-用户接口 : shell、thrift(自动生成Java代码)、web
+用户接口 : shell Client、thrift(自动生成Java代码)、web UI
 
 Thrift 服务器
 
@@ -33,7 +33,11 @@ Hadoop : Hive 的数据都是放在 Hadoop 里面的
 ```
 
 ### 2、构架图
-![image](./imgs/hive1.png)
+![image](imgs/hive1.png)
+
+### 3、端口
+| 端口 | 说明 | 详细 |
+| 0 0.0.0.0:10000 | hiveserver 服务端口 | Thrift Server 服务器 |
 
 
 ## 三、Hive 安装
@@ -230,3 +234,7 @@ INSERT OVERWRITE TABLE tablename1 [PARTITION (partcol1=val1, partcol2=val2 ...)]
 Hive extension (dynamic partition inserts):
 INSERT OVERWRITE TABLE tablename PARTITION (partcol1[=val1], partcol2[=val2] ...) select_statement FROM from_statement  
 ```
+
+
+## 四、Java 连接 hive
+10000

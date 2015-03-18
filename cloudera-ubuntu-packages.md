@@ -80,8 +80,9 @@ apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold -y
 
 ```
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle-cloudera
-export PATH=$PATH:$JAVA_HOME/bin
-export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
 ```
 * 执行source /etc/profile
 
@@ -230,8 +231,9 @@ apt-get -o Dpkg::Options::=--force-confdef -o Dpkg::Options::=--force-confold -y
 
 ```
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle-cloudera
-export PATH=$PATH:$JAVA_HOME/bin
-export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+export PATH=${JAVA_HOME}/bin:$PATH
 ```
 * 执行source /etc/profile
 	

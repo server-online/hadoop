@@ -79,7 +79,7 @@ hadoop job –kill [job-id]
 hadoop job -status [job-id]
 ```
 
-## 三、挂载目录到本地，实现云存储到 hadoop hdfs
+## 三、挂载hdfs目录到本地，实现云存储到 hadoop hdfs
 安装 JDK 包，下载地址 http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html
 
 ```
@@ -118,4 +118,14 @@ chown -R hdfs:hdfs /data/hdfs/
 hadoop-fuse-dfs dfs://192.168.160.45:8020/ /data/hdfs/
 
 umount /data/hdfs/ 卸载分区
+```
+
+### 2、shell.sh 操作 hadoop
+```
+1) 列出目录
+/usr/bin/hadoop fs -ls hdfs://192.168.160.45:8020/user/
+
+2) 写本地文件到 hdfs 中
+/usr/bin/hadoop fs -put /data/soj_log/aaa.log hdfs://192.168.160.45:8020/user/test/
+
 ```
